@@ -465,10 +465,129 @@ FROM EMPLOYEE
 WHERE EMAIL LIKE '___#_%' ESCAPE '#';
 --문자열 _ 앞에 세글자
 -----------------------------------------------------------------
+/* **** ORDER BY 절 ****
+ * 
+ * - SELECT문의 조회 결과(RESULT SET)를 정렬할 때 사용하는 구문
+ * - 어떤 순서로 보고싶은 지 지정 가능
+ * - *** SELECT구문에서 제일 마지막에 해석된다! ***
+ * - ***********************************
+ * [작성법&해석순서]
+ * 3: SELECT 컬럼명 AS 별칭, 컬럼명, 컬럼명, ...
+ * 1: FROM 테이블명
+ * 2: WHERE 조건식
+ * 4: ORDER BY 컬럼명 | 별칭 | 컬럼 순서 [오름/내림 차순] 
+ * 	        [NULLS FIRST | LAST]
+ * 		SELECT 문에서 별칭을 준 것이 ORDER BY 절보다 먼저 해석돼 
+ * ORDER BY절에서 별칭으로 사용 가능
+ * but WHERE절에서는 SELECT문 해석 전이므로 별칭 사용 불가
+ * */
+--EMPLOYEE 테이블에서
+--모든 사원의 이름, 급여 조회
+--단, 급여 오름차순으로 정렬
+/*2*/SELECT EMP_NAME , SALARY
+/*1*/FROM EMPLOYEE
+/*3*/ORDER BY SALARY ASC;--급여 오름차순
+--ASC(ascending) : 오름차순
+--SALARY컬럼을 중심으로 정렬
+-----------------------------------------------------------------
+--EMPLOYEE 테이블에서
+--모든 사원의 이름, 급여 조회
+--단, 급여 내림차순 정렬
+/*2*/SELECT EMP_NAME , SALARY
+/*1*/FROM EMPLOYEE
+/*3*/ORDER BY SALARY DESC;--급여 오름차순
+--DESC(descending) : 내림차순
+--SALARY컬럼을 중심으로 정렬
+-----------------------------------------------------------------
+--EMPLOYEE 테이블에서
+--부서코드가 'D5', 'D6', 'D9'인 사원의
+--사번, 이름, 부서코드를 
+--부서코드 오름차순으로 조회
+SELECT EMP_ID , EMP_NAME , DEPT_CODE 
+FROM EMPLOYEE
+WHERE DEPT_CODE IN ('D5', 'D6', 'D9')
+ORDER BY DEPT_CODE;--기본값이 오름차순이라 ASC는 생략 가능!!!!!!!!
+--ORDER BY절에 컬럼명만 쓰면 ASC안써도 기본 오름차순 정렬이다
+-----------------------------------------------------------------
+/*컬럼 순서를 이용해 정렬하기*/
+--EMPLOYEE 테이블에서
+--급여가 300만 이상, 600만 이하인 사원의
+--사번, 이름, 급여를 이름 내림차순으로 조회
+SELECT EMP_ID , EMP_NAME , SALARY
+FROM EMPLOYEE
+WHERE SALARY BETWEEN 3000000 AND 6000000
+-- == WHERE SALARY>=3000000 AND SALARY<=6000000
+ORDER BY 2 DESC;--EMP_NAME가 우리가 조회하려는 컬럼의 두 번째 여서 가능--근데 숫자로 쓰는건 비추!
+-----------------------------------------------------------------
+/*ORDER BY절에 수식 적용하기*/
+--EMPLOYEE 테이블에서 
+--이름, 연봉을 연봉 내림차순으로 조회하기
+SELECT EMP_NAME , SALARY*12
+FROM EMPLOYEE
+ORDER BY SALARY*12 DESC;--오 SELECT절에 쓰여있는 수식 그대로 써도 됨!
+--** 정렬 시 SELECT절에 작성된 컬럼을 대부분 ORDER BY절에도 그대로 따라 적는다!!!
+-----------------------------------------------------------------
+/*ORDER BY절에 별칭 사용하기*/
+-->SELECT절 해석 이후 ORDER BY절이 해석되기 때문에
+--SELECT절에서 해석된 별칭을 ORDER BY절에서 사용할 수 있다!!
+--EMPLOYEE 테이블에서 
+--이름, 연봉을 연봉 내림차순으로 조회하기
+SELECT EMP_NAME , SALARY*12 연봉
+FROM EMPLOYEE
+ORDER BY 연봉 DESC;--오 SELECT절에 쓰여있는 수식 그대로 써도 됨!
+--** 정렬 시 SELECT절에 작성된 컬럼을 대부분 ORDER BY절에도 그대로 따라 적는다!!!
+-----------------------------------------------------------------
+/*WHERE절 별칭 사용 불가 확인*/
+/*3*/SELECT EMP_NAME , DEPT_CODE 부서코드
+/*1*/FROM EMPLOYEE
+--WHERE 부서코드 ='D6';--부서코드가 'D6'인 사람들을 보고싶다/*2*/WHERE DEPT_CODE ='D6';--부서코드가 'D6'인 사람들을 보고싶다--SQL Error [904] [42000]: ORA-00904: "부서코드": 부적합한 식별자
+-->"부서코드" 컬럼이 존재하지 않는다!!
+-----------------------------------------------------------------
+/*NULLS FIRST / LAST 옵션 적용하기*/
+--모든 사원의 이름, 전화번호 조회하기
+--전화번호로 오름차순 정렬 + NULL은 가장 위에 나오도록
+SELECT EMP_NAME , PHONE FROM EMPLOYEE
+ORDER BY PHONE /*ASC*/NULLS FIRST;
+-----------------------------------------------------------------
+/*NULLS FIRST / LAST 옵션 적용하기*/
+--모든 사원의 이름, 전화번호 조회하기
+--전화번호로 오름차순 정렬 + NULL은 가장 아래에 나오도록
+SELECT EMP_NAME , PHONE FROM EMPLOYEE
+ORDER BY PHONE /*ASC*/ /*NULLS LAST*/;--NULLS LAST도 기본값!!!!
+-----------------------------------------------------------------
+/*NULLS FIRST / LAST 옵션 적용하기*/
+--모든 사원의 이름, 전화번호 조회하기
+--전화번호로 내림차순 정렬 + NULL은 가장 위에 나오도록
+SELECT EMP_NAME , PHONE FROM EMPLOYEE
+ORDER BY PHONE DESC NULLS FIRST;--내림차순을 먼저 하고, 그 후에 NULL을 올림
+--정렬 기준 -> NULL위치 선정 순서대로 해석*적용됨
+-----------------------------------------------------------------
+/**** 정렬 중첩 ****/
+--먼저 작성된 정렬 기준을 깨지 않고(흐트리지 않고)
+--다음 작성된 정렬 기준을 적용하기
+
+--EMPLOYEE 테이블에서
+--이름, 부서코드, 급여를 
+--부서코드 오름차순, 급여 내림차순으로 조회하기(정렬이 중첩됨!!)
+SELECT EMP_NAME , DEPT_CODE , SALARY
+FROM EMPLOYEE
+ORDER BY DEPT_CODE, SALARY DESC;--먼저 정렬된 틀 안에서만 정렬함
+--DEPT_CODE로 먼저 정렬 후, 
+--그 틀 안에서 같은 DEPT_CODE인 애들끼리만 부분부분 SALARY DESC 정렬
+-----------------------------------------------------------------
+--EMPLOYEE 테이블에서
+--이름, 부서코드, 직급코드(JOB_CODE)를
+--부서코드 오름차순, 직급코드 내림차순, 이름 오름차순으로 정렬
+SELECT EMP_NAME 이름, DEPT_CODE 부서코드, JOB_CODE 직급코드
+FROM EMPLOYEE
+ORDER BY 부서코드, 직급코드 DESC, 이름;-----------------------------------------------------------------
 
 
-
 
-
 
-
+
+
+
+
+
+
