@@ -56,6 +56,9 @@ FROM EMPLOYEE;
 SELECT DEPT_ID, DEPT_TITLE
 FROM DEPARTMENT;
 
+SELECT *
+FROM EMPLOYEE --EMPLOYEE테이블을 기준으로 삼아서
+JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID);
 
 SELECT EMP_ID, EMP_NAME, DEPT_CODE, DEPT_ID , DEPT_TITLE
 FROM EMPLOYEE --EMPLOYEE테이블을 기준으로 삼아서
@@ -70,6 +73,8 @@ JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID); --DEPARTMENT테이블을 연결할건�
  * 
  * 근데 조인의 단점 : 느리다!!->혼자 쓰면 모르지만, 100만명,1000만명이 쓰는 경우 엄청 느려짐
  * */
+
+-- 테이블의 별칭 지정하는 것은 ANSI 방법과 ORACLE 방법 모두에서 지정 가능하다!!!
 
 -- 1. 내부 조인(INNER JOIN) ( == 등가 조인(EQUAL JOIN) OF ORACLE)
 --> 연결되는 컬럼의 값이 일치하는 행들만 조인됨.  
@@ -106,6 +111,8 @@ SELECT EMP_ID, EMP_NAME, DEPT_CODE, DEPT_ID, DEPT_TITLE
 FROM EMPLOYEE
 JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID); --이 둘이 같은 값을 가지고 있어서 둘이 연결할거야
 --등호가 들어가서 오라클에서 등가조인이라고 부름
+--(DEPT_CODE = DEPT_ID)여기에서 이 둘의 순서 바꿔서 써도 상관 없음 (DEPT_ID=DEPT_CODE)
+--순서가 중요한 것이 아니어서
 
 
 -- 오라클 (JOIN이라는 단어를 작성하지 않음)
@@ -281,7 +288,8 @@ ORDER BY EMP_NAME, DEPT_CODE; --십자가(교차해서 JOIN)
 
 ---------------------------------------------------------------------------------------------------------------
 
--- 4. 비등가 조인(NON EQUAL JOIN) : 잘 쓸 수 있으면 좋음
+-- 4. 비등가 조인(NON EQUAL JOIN) : 잘 쓸 수 있으면 좋음 
+--컬럼이 다 같아서 아무 컬럼을 이용해서 조인해도 되지만 원하는 것을 구하려면 적절히 지정해야 함!
 
 -- '='(등호)를 사용하지 않는 JOIN 문
 --  지정한 컬럼 값이 일치하는 경우가 아닌, 값의 범위에 포함되는 행들을 연결하는 방식
@@ -591,12 +599,12 @@ WHERE NATIONAL_NAME IN ('한국', '일본');
 --WHERE NATIONAL_CODE IN ('KO', 'JP');
 
 
--- 8. 같은 부서에 근무하는 직원들의 사원명, 부서코드, 동료이름을 조회하시오.
+-- 8. 같은 부서에 근무하는 직원들의 사원명E, 부서코드E, 동료이름E을 조회하시오.
 -- SELF JOIN 사용
 --SELECT *
 SELECT A.EMP_NAME, A.DEPT_CODE, B.EMP_NAME
 FROM EMPLOYEE A
-JOIN EMPLOYEE B ON (A.DEPT_CODE = B.DEPT_CODE);
+JOIN EMPLOYEE B ON (A.DEPT_CODE = B.DEPT_CODE)
 WHERE A.EMP_ID != B.EMP_ID
 ORDER BY 1;
 
