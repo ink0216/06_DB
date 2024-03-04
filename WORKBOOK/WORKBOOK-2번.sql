@@ -1,8 +1,8 @@
 --PDF2
 --3번 워크북, 서브쿼리 실습문제, JOIN 실습문제도 해야함
 --1번
-SELECT STUDENT_NO , STUDENT_NAME ,
-ENTRANCE_DATE 
+SELECT STUDENT_NO 학번, STUDENT_NAME 이름,
+ENTRANCE_DATE 입학년도
 FROM TB_STUDENT 
 WHERE DEPARTMENT_NO ='002'
 ORDER BY ENTRANCE_DATE;
@@ -26,7 +26,8 @@ ORDER BY 나이;
 SELECT SUBSTR(PROFESSOR_NAME, 2) "이름" --두 번째 칸부터 길이를 지정하거나
 --길이 지정 안하는 경우, 자동으로 끝까지 자르는 것으로 됨
 FROM TB_PROFESSOR 
-WHERE LENGTH(PROFESSOR_NAME)='3';
+WHERE LENGTH(PROFESSOR_NAME)='3'
+ORDER BY PROFESSOR_NAME DESC;
 --이름이 네 글자인 경우도 동일하게 이름 부분만 나오게하고 싶으면->선택함수 이용
 SELECT 
 CASE 
