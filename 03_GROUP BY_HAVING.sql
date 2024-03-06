@@ -39,7 +39,7 @@ SELECT DEPT_CODE, SUM(SALARY), FLOOR(AVG(SALARY)), COUNT(*)
 FROM EMPLOYEE
 GROUP BY DEPT_CODE 
 ORDER BY DEPT_CODE;
-
+--그룹함수 : SUM, AVG, COUNT, MIN , MAX
 -------------------------------------------------------------------------
 -- EMPLOYEE 테이블에서 
 -- 부서코드와 부서별 보너스를 받는 사원의 수를 조회하고 

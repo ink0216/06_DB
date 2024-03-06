@@ -335,8 +335,8 @@ WHERE EMP.MANAGER_ID=MGR.EMP_ID(+);
 -- 반드시 두 테이블 간의 동일한 컬럼명, 타입을 가진 컬럼이 필요
 --> 없을 경우 교차조인이 됨.
 
---EMPLOYEE.JOB_CODE (CHAR(2)
---JOB.JOB_CODE      (CHAR(2)
+--EMPLOYEE.JOB_CODE (CHAR(2))
+--JOB.JOB_CODE      (CHAR(2))
 --컬럼 이름, 자료형, 저장하는 자료도 똑같아 ->이런 애들이 NATURAL JOIN의 대상이 된다 
 -->컬럼명, 컬럼의 자료형이 모두 일치! ==NATURAL JOIN의 대상
 

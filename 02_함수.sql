@@ -138,7 +138,7 @@ SELECT SYSDATE, SYSTIMESTAMP FROM DUAL;
 --	(몇 달이 차이 나는지)
 --> 반환값 중 정수 부분은 차이나는 개월 수가 됨
 --앞의 것 - 뒤의 것
-SELECT MONTHS_BETWEEN('2024-03-28',SYSDATE) FROM DUAL;
+SELECT MONTHS_BETWEEN('2024-04-28',SYSDATE) FROM DUAL;
 --**ORACLE은 자료형이 맞지 않는 상황이어도
 --	작성된 값의 형태가 요구하는 자료형의 형태를 띄고 있으면
 --	자동으로 형변환(PARSING, 데이터 타입 자체를 바꾸기)을 진행한다!!
