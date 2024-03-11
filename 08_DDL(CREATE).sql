@@ -290,7 +290,7 @@ AND UCC.CONSTRAINT_NAME = '제약조건명'; --제약조건명 자리에 제약�
 --A 1 (O)
 --A 2 (O)
 --B 1 (O)
---A 1 (X)
+--B 2 (X)
 CREATE TABLE USER_USED_UK2(
     USER_NO NUMBER,
     USER_ID VARCHAR2(20),
