@@ -413,7 +413,11 @@ VALUES(NULL, 'user01', 'pass01', '신사임당', '여', '010-9999-9999', 'sin123
 	-->다른 테이블이 제공하는 컬럼에는 PK(PRIMARY KEY) (100%) 또는 U(UNIQUE) 제약조건이 설정되어 있어야 한다
 	-->PK가 잘 설정되어 있어야 FOREIGN KEY도 잘 설정할 수 있다
 
-
+--PK나 U를 참조 가능
+--테이블에는 PK가 있는게 좋다
+--FK의 대상은 PK나 UNIQUE가 설정돼있는 컬럼이어야 한다
+--반드시 PK만 참조해야하는 것 아니고
+--PK 놔두고 UNIQUE 적용된 컬럼을 참조할 수도 있음
 
 -- FOREIGN KEY제약조건에 의해서 테이블간의 관계(RELATIONSHIP)가 형성됨
 	-->두 테이블간의 관계가 형성된다
@@ -699,7 +703,21 @@ VALUES(2, 'user02', 'pass02', '홍길동', '남자', '010-1234-5678', 'hong123@k
 --         STATUS(탈퇴여부) - NOT NULL(NN_STATUS), 'Y' 혹은 'N'으로 입력(CK_STATUS)
 -- 각 컬럼의 제약조건에 이름 부여할 것
 -- 5명 이상 INSERT할 것
-
+CREATE TABLE USER_TEST(
+USER_NO NUMBER CONSTRAINT PK_USER_TEST PRIMARY KEY,
+USER_ID VARCHAR2(30) CONSTRAINT UK_USER_ID UNIQUE,
+USER_PWD VARCHAR2(100) CONSTRAINT NN_USER_PWD NOT NULL,
+PNO CHAR(14) CONSTRAINT UK_PNO UNIQUE CONSTRAINT NN_PNO NOT NULL, --제약조건 여러 개 가능
+GENDER CHAR(3) CONSTRAINT CK_GENDER CHECK(GENDER IN ('남','여')),
+PHONE  VARCHAR2(20),
+ADDRESS VARCHAR2(500),
+STATUS CHAR(1) CONSTRAINT CK_STATUS CHECK(STATUS IN ('Y','N'))
+);
+/* 바이트
+ * 숫자 : 1바이트
+ * 영어 알파벳(대/소문자) : 1바이트
+ * 키보드에 있는 특수기호 : 1바이트
+ * 한글(ㄱ/ㅏ/가), 키보드에 없는 특수기호, 한자 :3바이트 */
 
 
 ----------------------------------------------------------------------------------------------------------------

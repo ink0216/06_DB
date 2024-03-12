@@ -265,6 +265,9 @@ ALTER TABLE DEPT_COPY RENAME TO DCOPY;
 SELECT * FROM DCOPY;
 SELECT * FROM DEPT_COPY; -- 이름이 변경되어 DEPT_COPY 테이블명으로 조회 불가(그 이름의 테이블 이제 존재하지 않음)
 
+--부서코드가 일치하는 부서가 있는지 확인
+SELECT COUNT(*) FROM DEPARTMENT4 
+WHERE DEPT_ID='D6';
 
 
 
